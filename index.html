@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice Form</title>
+  <style>
+    .error-message {
+      color: red;
+    }
+    .error-summary {
+      border: 1px solid red;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <form id="invoice-form" novalidate>
+    <div id="error-summary" class="error-summary" role="alert" hidden tabindex="-1">
+      <h2>There is a problem</h2>
+      <ul id="error-summary-list"></ul>
+    </div>
+
+    <div>
+      <label for="amount">Amount</label>
+      <input id="amount" name="amount" type="number" aria-describedby="amount-error" />
+      <span id="amount-error" class="error-message" aria-live="polite"></span>
+    </div>
+
+    <div>
+      <label for="date">Date</label>
+      <input id="date" name="date" type="date" aria-describedby="date-error" />
+      <span id="date-error" class="error-message" aria-live="polite"></span>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('invoice-form');
+    const errorSummary = document.getElementById('error-summary');
+    const errorSummaryList = document.getElementById('error-summary-list');
+
+    function showErrors(errors) {
+      errorSummaryList.innerHTML = '';
+      errors.forEach(({ field, message }) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${field}`;
+        a.textContent = message;
+        li.appendChild(a);
+        errorSummaryList.appendChild(li);
+      });
+      errorSummary.hidden = false;
+      errorSummary.focus();
+    }
+
+    function clearErrors() {
+      errorSummary.hidden = true;
+      errorSummaryList.innerHTML = '';
+      document.querySelectorAll('.error-message').forEach(el => (el.textContent = ''));
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      clearErrors();
+      const errors = [];
+
+      const amount = document.getElementById('amount');
+      const date = document.getElementById('date');
+
+      if (!amount.value) {
+        errors.push({ field: 'amount', message: 'Enter an amount' });
+        document.getElementById('amount-error').textContent = 'Enter an amount';
+      }
+
+      if (!date.value) {
+        errors.push({ field: 'date', message: 'Enter a date' });
+        document.getElementById('date-error').textContent = 'Enter a date';
+      }
+
+      if (errors.length) {
+        showErrors(errors);
+      } else {
+        form.submit();
+      }
+    });
+  </script>
+</body>
+</html>
