@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Tenants</title>
+<h1>Tenants</h1>
+<a href="/">Invoices</a>
+<form method="post">
+  Name: <input name="name">
+  Email: <input name="email">
+  <button type="submit">Add Tenant</button>
+</form>
+<table border="1">
+  <tr><th>ID</th><th>Name</th><th>Email</th><th>Xero Contact</th></tr>
+  {% for t in tenants %}
+  <tr>
+    <td>{{ t[0] }}</td>
+    <td>{{ t[1] }}</td>
+    <td>{{ t[2] }}</td>
+    <td>{{ t[3] or 'Not Synced' }}</td>
+  </tr>
+  {% endfor %}
+</table>

@@ -1,0 +1,15 @@
+<!doctype html>
+<title>Invoices</title>
+<h1>Invoices</h1>
+<a href="/tenants">Manage Tenants</a> | <a href="/invoices">New Invoice</a>
+<table border="1">
+  <tr><th>ID</th><th>Tenant</th><th>Amount</th><th>Xero Link</th></tr>
+  {% for inv in invoices %}
+  <tr>
+    <td>{{ inv[0] }}</td>
+    <td>{{ inv[1] }}</td>
+    <td>{{ inv[2] }}</td>
+    <td>{% if inv[3] %}<a href="{{ inv[3] }}" target="_blank">View</a>{% else %}Pending{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
