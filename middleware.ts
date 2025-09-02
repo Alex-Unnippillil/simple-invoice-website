@@ -12,9 +12,11 @@ export function middleware(request: NextRequest) {
   const requiresAuth = pathname.startsWith('/tenant') || pathname.startsWith('/admin');
 
   if (requiresAuth) {
-    const token = request.cookies.get('token');
+    const sessionToken =
+      request.cookies.get('next-auth.session-token') ??
+      request.cookies.get('__Secure-next-auth.session-token');
 
-    if (!token) {
+    if (!sessionToken) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = '/login';
       loginUrl.search = '';

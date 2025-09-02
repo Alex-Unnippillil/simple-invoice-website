@@ -1,23 +1,7 @@
-'use client';
+import ClientReceiptsPage from './client-page';
+import { requireAuth } from '../../lib/auth/requireAuth';
 
-export default function ReceiptsPage() {
-  const downloadAll = async () => {
-    const res = await fetch('/api/receipts/export');
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'receipts.zip';
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-  };
-
-  return (
-    <div>
-      <h1>Receipts</h1>
-      <button onClick={downloadAll}>Download all receipts</button>
-    </div>
-  );
+export default async function ReceiptsPage() {
+  await requireAuth();
+  return <ClientReceiptsPage />;
 }
