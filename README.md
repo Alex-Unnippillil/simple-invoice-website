@@ -8,8 +8,10 @@ This demo adds a minimal lease document system. Start the server and open `/leas
 
 ### Running
 
-```
-npm install
+Install dependencies and run the application using npm:
+
+```sh
+npm ci
 npm start
 ```
 
