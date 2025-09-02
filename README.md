@@ -19,3 +19,22 @@ Set environment variables for AWS to use S3:
 export AWS_REGION=us-east-1
 export S3_BUCKET=your-bucket
 ```
+
+### Local MinIO
+
+A `docker-compose.yml` file is provided to run a local [MinIO](https://min.io/) server for storing PDFs.
+
+Start the service:
+
+```
+docker compose up -d minio
+```
+
+Create the default `pdfs` bucket and upload a sample file using the provided script (requires the AWS CLI):
+
+```
+pip install awscli
+./scripts/create_pdf_bucket.sh
+```
+
+The script verifies the bucket exists and lists uploaded files. The MinIO web console is available at `http://localhost:9001`.
