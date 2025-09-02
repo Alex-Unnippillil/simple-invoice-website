@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Invoice</title>
+  <style>
+    @media print {
+      nav { display: none; }
+      body { margin: 0; }
+    }
+  </style>
 </head>
 <body>
   <nav>
@@ -17,6 +23,10 @@
     <section>
       <h2>Invoice Details</h2>
       <p>Invoice information will be displayed here.</p>
+    </section>
+    <section id="totals">
+      <h2>Totals</h2>
+      <p>Total Due: $0.00</p>
     </section>
   </main>
   <footer>
