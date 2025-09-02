@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Invoices</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Invoices</h1>
+
+  <form method="get" action="/tenant/invoices">
+    <label>Status:
+      <select name="status">
+        <option value="" <%= query.status === '' ? 'selected' : '' %>>All</option>
+        <option value="paid" <%= query.status === 'paid' ? 'selected' : '' %>>Paid</option>
+        <option value="pending" <%= query.status === 'pending' ? 'selected' : '' %>>Pending</option>
+        <option value="overdue" <%= query.status === 'overdue' ? 'selected' : '' %>>Overdue</option>
+      </select>
+    </label>
+    <label>From:
+      <input type="date" name="from" value="<%= query.from %>">
+    </label>
+    <label>To:
+      <input type="date" name="to" value="<%= query.to %>">
+    </label>
+    <button type="submit">Search</button>
+  </form>
+
+  <table border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (invoices.length === 0) { %>
+        <tr><td colspan="5">No invoices found.</td></tr>
+      <% } %>
+      <% invoices.forEach(inv => { %>
+      <tr>
+        <td><%= inv.number %></td>
+        <td><%= inv.date %></td>
+        <td><%= inv.status %></td>
+        <td>$<%= inv.amount.toFixed(2) %></td>
+        <td>
+          <a href="#">View</a> |
+          <a href="#">Download</a>
+          <% if (inv.status !== 'paid') { %> | <a href="#">Pay</a><% } %>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <% if (currentPage > 1) { %>
+      <a href="?page=<%= currentPage - 1 %>&status=<%= query.status %>&from=<%= query.from %>&to=<%= query.to %>">Prev</a>
+    <% } %>
+    Page <%= currentPage %> of <%= totalPages %>
+    <% if (currentPage < totalPages) { %>
+      <a href="?page=<%= currentPage + 1 %>&status=<%= query.status %>&from=<%= query.from %>&to=<%= query.to %>">Next</a>
+    <% } %>
+  </div>
+</body>
+</html>
