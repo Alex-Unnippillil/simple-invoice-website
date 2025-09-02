@@ -1,0 +1,10 @@
+{
+  "name": "simple-invoice-website",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo 'No tests'"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}
