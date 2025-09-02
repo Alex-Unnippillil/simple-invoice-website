@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Accounting Settings</title>
+  <style>
+    .connected { color: green; }
+    .status { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Accounting Settings</h1>
+  <div>
+    <h3>QuickBooks Online</h3>
+    <span id="qbo-status" class="status">Disconnected</span>
+    <button onclick="connect('qbo')">Connect</button>
+    <button onclick="refreshToken('qbo')">Refresh</button>
+    <button onclick="disconnect('qbo')">Disconnect</button>
+  </div>
+  <div>
+    <h3>Xero</h3>
+    <span id="xero-status" class="status">Disconnected</span>
+    <button onclick="connect('xero')">Connect</button>
+    <button onclick="refreshToken('xero')">Refresh</button>
+    <button onclick="disconnect('xero')">Disconnect</button>
+  </div>
+  <script>
+    async function loadStatus() {
+      const res = await fetch('/api/status');
+      const data = await res.json();
+      updateStatus('qbo', data.qbo);
+      updateStatus('xero', data.xero);
+    }
+    function updateStatus(provider, connected) {
+      const el = document.getElementById(provider + '-status');
+      el.textContent = connected ? 'Connected' : 'Disconnected';
+      el.className = connected ? 'status connected' : 'status';
+    }
+    async function connect(provider) {
+      await fetch('/api/connect/' + provider, {method: 'POST'});
+      loadStatus();
+    }
+    async function refreshToken(provider) {
+      await fetch('/api/refresh/' + provider, {method: 'POST'});
+      loadStatus();
+    }
+    async function disconnect(provider) {
+      await fetch('/api/disconnect/' + provider, {method: 'POST'});
+      loadStatus();
+    }
+    loadStatus();
+  </script>
+</body>
+</html>
