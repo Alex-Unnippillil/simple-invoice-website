@@ -1,0 +1,29 @@
+// Prisma schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Property {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String?
+  units     Unit[]
+  createdAt DateTime @default(now())
+}
+
+model Unit {
+  id         Int      @id @default(autoincrement())
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId Int
+  unitNumber String
+  bedrooms   Int
+  bathrooms  Int
+  sqft       Int
+  notes      String?
+}
