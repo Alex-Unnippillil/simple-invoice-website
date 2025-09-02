@@ -1,0 +1,11 @@
+{
+  "name": "simple-invoice-website",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "dependencies": {
+    "pino": "^8.17.0"
+  }
+}
