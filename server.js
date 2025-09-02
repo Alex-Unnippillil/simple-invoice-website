@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { initDb, addStatus, getStatuses } = require('./database');
+const { runChecks } = require('./services/statusCheck');
 
 const app = express();
 initDb();
@@ -27,7 +28,18 @@ app.get('/lease/:id/status', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Health check endpoint
+app.get('/api/status', async (_req, res) => {
+  const result = await runChecks();
+  res.status(result.ok ? 200 : 503).json(result);
 });
+
+// Only start server if this file is executed directly
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
