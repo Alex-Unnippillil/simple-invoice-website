@@ -10,7 +10,18 @@ This demo adds a minimal lease document system. Start the server and open `/leas
 
 ```
 npm install
+
+# start development server with automatic reload
+npm run dev
+
+# compile TypeScript utilities
+npm run build
+
+# run the server
 npm start
+
+# run tests
+npm test
 ```
 
 Set environment variables for AWS to use S3:
