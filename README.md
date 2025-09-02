@@ -1,15 +1,21 @@
 # simple-invoice-website
+
 basic rent invoicing system that records payments and generates printable/PDF rent receipts
 
-## Development
+## Lease Documents
 
-The project includes a small Express server instrumented with [Sentry](https://sentry.io/) tracing. Incoming requests log any `traceparent` header and Sentry events are associated with the same trace.
+This demo adds a minimal lease document system. Start the server and open `/leases/<leaseId>` to upload files and view previously uploaded documents. Files are stored in Amazon S3 when `AWS_REGION` and `S3_BUCKET` are configured; otherwise they are kept locally under `uploads/`. Download links use signed URLs that expire after one hour.
 
-Run the server with:
+### Running
 
-```bash
-SENTRY_DSN=<your dsn> npm start
+```
+npm install
+npm start
 ```
 
-Trigger an example error (which will create a Sentry event linked to the trace) by requesting `GET /error`.
+Set environment variables for AWS to use S3:
 
+```
+export AWS_REGION=us-east-1
+export S3_BUCKET=your-bucket
+```

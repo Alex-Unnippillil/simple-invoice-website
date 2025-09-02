@@ -1,42 +1,29 @@
 const express = require('express');
-const Sentry = require('@sentry/node');
-
-Sentry.init({
-  dsn: process.env.SENTRY_DSN || '',
-  tracesSampleRate: 1.0,
-});
+const path = require('path');
+const leaseDocumentsRouter = require('./routes/leaseDocuments');
+const { getDocumentsForLease } = require('./models/leaseDocument');
+const { generateDownloadUrl } = require('./services/storage');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Capture request data for Sentry and set up tracing.
-app.use(Sentry.Handlers.requestHandler());
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-app.use((req, res, next) => {
-  const traceparent = req.header('traceparent');
-  console.log(`Incoming request ${req.method} ${req.originalUrl} traceparent=${traceparent || 'none'}`);
+app.use('/api/leases/:leaseId/documents', leaseDocumentsRouter);
 
-  const transaction = Sentry.startTransaction({
-    name: `${req.method} ${req.path}`,
-    op: 'http.server',
-    traceparent,
-  });
-  Sentry.getCurrentHub().configureScope(scope => scope.setSpan(transaction));
-  res.on('finish', () => transaction.finish());
-  next();
+app.get('/leases/:leaseId', async (req, res) => {
+  const docs = getDocumentsForLease(req.params.leaseId);
+  const withUrls = await Promise.all(
+    docs.map(async (d) => ({ ...d, url: await generateDownloadUrl(d.storageKey) }))
+  );
+  res.render('lease', { leaseId: req.params.leaseId, documents: withUrls });
 });
 
-app.get('/', (req, res) => {
-  res.json({ message: 'hello' });
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 
-// Route to demonstrate Sentry error capture
-app.get('/error', () => {
-  throw new Error('Test error');
-});
-
-app.use(Sentry.Handlers.errorHandler());
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
 });
