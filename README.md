@@ -1,9 +1,15 @@
 # simple-invoice-website
-
-Basic rent invoicing system that records payments and generates printable/PDF rent receipts.
+basic rent invoicing system that records payments and generates printable/PDF rent receipts
 
 ## Development
 
-- `app.py` provides a small Flask server with an SQLite database.
-- Webhook endpoints `/webhook/resend` and `/webhook/twilio` flag email addresses or phone numbers as risky.
-- The contact list UI shows a red "risky" badge and warns before sending messages to flagged contacts.
+The project includes a small Express server instrumented with [Sentry](https://sentry.io/) tracing. Incoming requests log any `traceparent` header and Sentry events are associated with the same trace.
+
+Run the server with:
+
+```bash
+SENTRY_DSN=<your dsn> npm start
+```
+
+Trigger an example error (which will create a Sentry event linked to the trace) by requesting `GET /error`.
+
