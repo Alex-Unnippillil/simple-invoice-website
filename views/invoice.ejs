@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Invoice <%= invoice.id %></title>
+</head>
+<body>
+  <h1>Invoice <%= invoice.id %></h1>
+  <p>Customer: <%= invoice.customer %></p>
+  <p>Date: <%= invoice.date %></p>
+  <table border="1" cellpadding="5">
+    <tr><th>Description</th><th>Amount</th></tr>
+    <% invoice.items.forEach(function(item){ %>
+      <tr><td><%= item.description %></td><td><%= item.amount.toFixed(2) %></td></tr>
+    <% }) %>
+  </table>
+  <p>Total: <%= invoice.items.reduce((sum, item)=>sum+item.amount,0).toFixed(2) %></p>
+  <p><a href="/invoice/<%= invoice.id %>/pdf">Download PDF</a></p>
+</body>
+</html>

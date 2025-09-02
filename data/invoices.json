@@ -1,0 +1,10 @@
+{
+  "1": {
+    "id": 1,
+    "customer": "John Doe",
+    "date": "2024-01-01",
+    "items": [
+      {"description": "Rent", "amount": 1000}
+    ]
+  }
+}
