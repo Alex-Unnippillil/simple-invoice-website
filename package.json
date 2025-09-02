@@ -1,0 +1,15 @@
+{
+  "name": "simple-invoice-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "dependencies": {
+    "@simplewebauthn/browser": "^8.1.1",
+    "@simplewebauthn/server": "^8.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}
