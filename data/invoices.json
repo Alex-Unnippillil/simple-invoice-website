@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "leaseId": 1,
+    "amount": 1200,
+    "dueDate": "2024-01-05",
+    "status": "unpaid"
+  },
+  {
+    "id": 2,
+    "leaseId": 1,
+    "amount": 1200,
+    "dueDate": "2024-02-05",
+    "status": "unpaid"
+  },
+  {
+    "id": 3,
+    "leaseId": 2,
+    "amount": 1100,
+    "dueDate": "2024-06-05",
+    "status": "unpaid"
+  }
+]
