@@ -1,0 +1,22 @@
+{
+  "development": {
+    "default": {
+      "sampleFeature": true
+    },
+    "segments": {
+      "beta": {
+        "betaFeature": true
+      }
+    }
+  },
+  "production": {
+    "default": {
+      "sampleFeature": false
+    },
+    "segments": {
+      "beta": {
+        "betaFeature": true
+      }
+    }
+  }
+}
