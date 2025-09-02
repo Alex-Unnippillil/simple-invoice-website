@@ -1,0 +1,7 @@
+[
+ {"id":1,"organization":"OrgA","property":"Property1","amount":1000,"paid_amount":200,"due_date":"2024-04-15"},
+ {"id":2,"organization":"OrgA","property":"Property2","amount":1500,"paid_amount":0,"due_date":"2024-03-01"},
+ {"id":3,"organization":"OrgB","property":"Property1","amount":2000,"paid_amount":500,"due_date":"2024-01-15"},
+ {"id":4,"organization":"OrgB","property":"Property2","amount":500,"paid_amount":0,"due_date":"2023-11-01"},
+ {"id":5,"organization":"OrgC","property":"Property3","amount":750,"paid_amount":100,"due_date":"2024-05-01"}
+]

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aging Report</title>
+</head>
+<body>
+    <h1>Aging Report</h1>
+    {% if property %}<p>Property: {{ property }}</p>{% endif %}
+    {% if organization %}<p>Organization: {{ organization }}</p>{% endif %}
+    <table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+            <th>Bucket</th>
+            <th>Outstanding</th>
+        </tr>
+        {% for label, data in aging.items() %}
+        <tr>
+            <td>{{ label }}</td>
+            <td>{{ "%.2f"|format(data.total) }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td><strong>Total</strong></td>
+            <td><strong>{{ "%.2f"|format(totals.total_outstanding) }}</strong></td>
+        </tr>
+    </table>
+    <p>
+        <a href="?property={{ property }}&organization={{ organization }}&export=csv">Export CSV</a>
+        |
+        <a href="?property={{ property }}&organization={{ organization }}&export=pdf">Export PDF</a>
+    </p>
+</body>
+</html>
