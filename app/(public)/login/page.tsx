@@ -1,3 +1,5 @@
+'use client';
+
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Valid email required" }),
@@ -66,6 +69,14 @@ export default function LoginPage() {
 
           <Button type="submit" className="w-full">
             Log in
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("google")}
+          >
+            Sign in with Google
           </Button>
         </form>
       </Form>
