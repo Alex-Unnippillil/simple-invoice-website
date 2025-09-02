@@ -3,7 +3,7 @@ import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentation
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
-import { StripeInstrumentation } from '@opentelemetry/instrumentation-stripe';
+import { isFeatureEnabled } from './flags';
 
 const traceExporter = new OTLPTraceExporter({
   url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
@@ -17,14 +17,19 @@ const sdk = new NodeSDK({
   traceExporter,
   instrumentations: [
     getNodeAutoInstrumentations(),
-    new StripeInstrumentation(),
   ],
 });
 
 export function startTelemetry(): Promise<void> {
+  if (!isFeatureEnabled('telemetry')) {
+    return Promise.resolve();
+  }
   return sdk.start();
 }
 
 export function shutdownTelemetry(): Promise<void> {
+  if (!isFeatureEnabled('telemetry')) {
+    return Promise.resolve();
+  }
   return sdk.shutdown();
 }
