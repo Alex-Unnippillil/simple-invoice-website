@@ -18,6 +18,7 @@ model Unit {
 model TenantProfile {
   id     Int     @id @default(autoincrement())
   name   String
+  stripeCustomerId String?
   leases Lease[]
 }
 
