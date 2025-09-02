@@ -1,0 +1,18 @@
+{
+  "name": "simple-invoice-website",
+  "version": "1.0.0",
+  "description": "basic rent invoicing system that records payments and generates printable/PDF rent receipts",
+  "type": "commonjs",
+  "scripts": {
+    "generate:vapid": "node scripts/generate-vapid.js",
+    "build": "tsc lib/push.ts --target ES2020 --module ES2020 --outDir public",
+    "test": "node -e \"console.log('No tests')\""
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
