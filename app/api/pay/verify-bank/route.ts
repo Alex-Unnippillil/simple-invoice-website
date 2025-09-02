@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { achEnabled } from '@/lib/flags';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -10,6 +11,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  * Supports both instant verification and micro‑deposit flows.
  */
 export async function POST(req: Request) {
+  if (!achEnabled) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
   const { intentId, type = 'payment', amounts } = await req.json();
 
   try {
