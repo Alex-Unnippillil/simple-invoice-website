@@ -1,20 +1,22 @@
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
-const path = require('path');
-const fs = require('fs');
 
-function getS3Client() {
-  if (!process.env.AWS_REGION) return null;
-  return new S3Client({ region: process.env.AWS_REGION });
+function createClient() {
+  return new S3Client({
+    region: process.env.AWS_REGION,
+    endpoint: process.env.S3_ENDPOINT,
+    forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true',
+    credentials: process.env.S3_ACCESS_KEY
+      ? {
+          accessKeyId: process.env.S3_ACCESS_KEY,
+          secretAccessKey: process.env.S3_SECRET_KEY,
+        }
+      : undefined,
+  });
 }
 
 async function uploadBuffer(buffer, key, mimetype) {
-  const client = getS3Client();
-  if (!client) {
-    const filePath = path.join(__dirname, '../uploads', key);
-    fs.writeFileSync(filePath, buffer);
-    return { storageKey: key, local: true };
-  }
+  const client = createClient();
   const cmd = new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
@@ -22,14 +24,11 @@ async function uploadBuffer(buffer, key, mimetype) {
     ContentType: mimetype,
   });
   await client.send(cmd);
-  return { storageKey: key, local: false };
+  return { storageKey: key };
 }
 
 async function generateDownloadUrl(storageKey) {
-  const client = getS3Client();
-  if (!client) {
-    return `/uploads/${storageKey}`;
-  }
+  const client = createClient();
   const command = new GetObjectCommand({ Bucket: process.env.S3_BUCKET, Key: storageKey });
   return await getSignedUrl(client, command, { expiresIn: 3600 });
 }

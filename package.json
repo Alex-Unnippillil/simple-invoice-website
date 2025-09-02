@@ -5,13 +5,19 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node -e \"console.log('no tests')\""
+    "test": "node tests/storageAdapter.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.879.0",
+    "@aws-sdk/s3-request-presigner": "^3.879.0",
     "express": "^5.1.0",
+    "minio": "^8.0.5",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "s3rver": "^3.7.1"
   }
 }
