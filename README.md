@@ -19,3 +19,19 @@ Set environment variables for AWS to use S3:
 export AWS_REGION=us-east-1
 export S3_BUCKET=your-bucket
 ```
+
+### Vercel Environment Variables
+
+Set any required environment variables in the Vercel dashboard or via the CLI:
+
+```
+vercel env add <KEY> staging
+```
+
+Sync the staging values to a local `.env.local` file with:
+
+```
+npm run env:pull
+```
+
+The command runs `vercel env pull` and writes the staging values to `.env.local`. Inspect the file to verify the values were pulled correctly.

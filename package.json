@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node -e \"console.log('no tests')\""
+    "test": "node -e \"console.log('no tests')\"",
+    "env:pull": "npx --yes vercel env pull .env.local --environment=staging"
   },
   "keywords": [],
   "author": "",
