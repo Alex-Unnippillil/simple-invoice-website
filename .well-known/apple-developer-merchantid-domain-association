@@ -1,0 +1,3 @@
+# Placeholder domain verification file for Apple Pay.
+# Replace with the exact file downloaded from the Apple Developer portal.
+{"merchantIdentifier":"merchant.com.example","domainName":"example.com","displayName":"Example Store"}
