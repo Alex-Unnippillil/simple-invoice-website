@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "tenantId": 1,
+    "unit": "A1",
+    "startDate": "2024-01-01",
+    "endDate": "2024-12-31",
+    "monthlyRent": 1200
+  },
+  {
+    "id": 2,
+    "tenantId": 2,
+    "unit": "B2",
+    "startDate": "2024-06-01",
+    "endDate": "2025-05-31",
+    "monthlyRent": 1100
+  }
+]
