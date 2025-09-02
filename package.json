@@ -1,0 +1,16 @@
+{
+  "name": "simple-invoice-website",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"No tests\""
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.496.0",
+    "@aws-sdk/s3-request-presigner": "^3.496.0",
+    "@vercel/blob": "^0.16.0",
+    "zod": "^3.23.0"
+  }
+}
