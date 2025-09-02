@@ -6,6 +6,11 @@ const app = express();
 initDb();
 
 app.use(express.json());
+// Tenant dashboard
+app.get('/tenant', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'tenant', 'index.html'));
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Webhook endpoint for provider to send status updates
