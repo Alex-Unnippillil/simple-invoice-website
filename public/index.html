@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Invoice</title>
+</head>
+<body>
+  <h1>Statement Range</h1>
+  <select id="range-select">
+    <option value="ytd">Year to Date</option>
+    <option value="custom">Custom Range</option>
+  </select>
+  <div id="custom-range" style="display:none;">
+    <input type="date" id="start-date" />
+    <input type="date" id="end-date" />
+  </div>
+  <script src="js/date-range-selector.js"></script>
+</body>
+</html>
