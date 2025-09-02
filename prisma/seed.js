@@ -1,7 +1,18 @@
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
+  const adminPassword = await bcrypt.hash('admin', 10);
+  await prisma.user.upsert({
+    where: { email: 'admin@example.com' },
+    update: {},
+    create: {
+      email: 'admin@example.com',
+      password: adminPassword,
+    },
+  });
+
   const unit = await prisma.unit.create({ data: { name: 'Unit A' } });
   const tenant = await prisma.tenantProfile.create({ data: { name: 'Alice' } });
   const lease = await prisma.lease.create({
