@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Failed Integrations</title>
+</head>
+<body>
+  <h1>Failed Integrations</h1>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Payload</th>
+      <th>Response</th>
+      <th>Attempts</th>
+      <th>Retry</th>
+    </tr>
+    <% rows.forEach(function(row){ %>
+    <tr>
+      <td><%= row.id %></td>
+      <td><pre><%= row.payload %></pre></td>
+      <td><pre><%= row.response %></pre></td>
+      <td><%= row.attempt_count %></td>
+      <td>
+        <form method="post" action="/admin/retry/<%= row.id %>">
+          <button type="submit">Retry</button>
+        </form>
+      </td>
+    </tr>
+    <% }); %>
+  </table>
+</body>
+</html>
