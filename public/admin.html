@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin</title>
+</head>
+<body>
+  <h1>Create Unit</h1>
+  <form id="unit-form">
+    <input type="text" id="unit-name" placeholder="Unit name" required />
+    <button type="submit">Create Unit</button>
+  </form>
+
+  <h1>Create Tenant</h1>
+  <form id="tenant-form">
+    <input type="text" id="tenant-name" placeholder="Tenant name" required />
+    <button type="submit">Create Tenant</button>
+  </form>
+
+  <h1>Create Lease</h1>
+  <form id="lease-form">
+    <select id="lease-unit" required></select>
+    <select id="lease-tenant" required></select><br />
+    <input type="date" id="start-date" required />
+    <input type="date" id="end-date" required />
+    <input type="number" id="monthly-rent" placeholder="Monthly Rent" required />
+    <input type="number" id="deposit" placeholder="Deposit" required />
+    <input type="text" id="currency" placeholder="Currency" required />
+    <input type="number" id="billing-day" placeholder="Billing Day" required />
+    <input type="text" id="status" placeholder="Status" required />
+    <button type="submit">Create Lease</button>
+  </form>
+
+  <script>
+  async function refreshOptions() {
+    const units = await fetch('/api/units').then(r => r.json());
+    const tenants = await fetch('/api/tenants').then(r => r.json());
+    const unitSelect = document.getElementById('lease-unit');
+    const tenantSelect = document.getElementById('lease-tenant');
+    unitSelect.innerHTML = units.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+    tenantSelect.innerHTML = tenants.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+  }
+
+  document.getElementById('unit-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    await fetch('/api/units', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ name: document.getElementById('unit-name').value })});
+    document.getElementById('unit-name').value='';
+    refreshOptions();
+  });
+
+  document.getElementById('tenant-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    await fetch('/api/tenants', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ name: document.getElementById('tenant-name').value })});
+    document.getElementById('tenant-name').value='';
+    refreshOptions();
+  });
+
+  document.getElementById('lease-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const body = {
+      unitId: Number(document.getElementById('lease-unit').value),
+      tenantId: Number(document.getElementById('lease-tenant').value),
+      startDate: document.getElementById('start-date').value,
+      endDate: document.getElementById('end-date').value,
+      monthlyRent: Number(document.getElementById('monthly-rent').value),
+      deposit: Number(document.getElementById('deposit').value),
+      currency: document.getElementById('currency').value,
+      billingDay: Number(document.getElementById('billing-day').value),
+      status: document.getElementById('status').value
+    };
+    await fetch('/api/leases', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    alert('Lease created');
+  });
+
+  refreshOptions();
+  </script>
+</body>
+</html>
