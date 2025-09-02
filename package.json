@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node -e \"console.log('no tests')\""
+    "test": "node --test node-tests",
+    "gen:secret": "node scripts/generate-secret.js"
   },
   "keywords": [],
   "author": "",
