@@ -24,10 +24,10 @@ export default function LoginPage() {
     defaultValues: { email: "", password: "" },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: handle login
-    console.log(values);
-  }
+    function onSubmit(values: z.infer<typeof formSchema>) {
+      // TODO: handle login
+      console.warn(values);
+    }
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">

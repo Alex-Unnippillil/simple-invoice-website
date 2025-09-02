@@ -17,7 +17,7 @@ async function main() {
       status: 'active'
     }
   });
-  console.log('Seeded lease', lease);
+  console.warn('Seeded lease', lease);
 }
 
 main().catch(e => {
