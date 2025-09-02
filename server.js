@@ -1,8 +1,23 @@
 const express = require('express');
 const path = require('path');
 const { initDb, addStatus, getStatuses } = require('./database');
+const pinoHttp = require('pino-http');
+const logger = require('./lib/logger');
+const { randomUUID } = require('crypto');
 
 const app = express();
+
+app.use(
+  pinoHttp({
+    logger,
+    genReqId: (req) => req.headers['x-request-id'] || randomUUID(),
+    customProps: (req) => ({
+      requestId: req.id,
+      userId: req.headers['x-user-id'] || null
+    })
+  })
+);
+
 initDb();
 
 app.use(express.json());
@@ -29,5 +44,5 @@ app.get('/lease/:id/status', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });

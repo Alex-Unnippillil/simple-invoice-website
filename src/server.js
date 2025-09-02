@@ -1,9 +1,23 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const path = require('path');
+const pinoHttp = require('pino-http');
+const logger = require('../lib/logger');
+const { randomUUID } = require('crypto');
 
 const app = express();
 const prisma = new PrismaClient();
+
+app.use(
+  pinoHttp({
+    logger,
+    genReqId: (req) => req.headers['x-request-id'] || randomUUID(),
+    customProps: (req) => ({
+      requestId: req.id,
+      userId: req.headers['x-user-id'] || null
+    })
+  })
+);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -66,4 +80,4 @@ app.get('/api/leases', async (_req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
