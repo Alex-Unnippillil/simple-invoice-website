@@ -1,0 +1,13 @@
+{
+  "name": "simple-invoice-website",
+  "version": "1.0.0",
+  "description": "Basic rent invoicing system",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}
