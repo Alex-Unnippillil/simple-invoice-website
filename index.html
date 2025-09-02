@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div id="invoice">
+    <h1>Invoice #<span id="invoice-number"></span></h1>
+    <div>Status: <span id="invoice-status"></span></div>
+    <div id="payment-metadata" class="hidden">
+      <h2>Payment Details</h2>
+      <ul>
+        <li>Paid on: <span id="payment-date"></span></li>
+        <li>Method: <span id="payment-method"></span></li>
+        <li>Reference: <span id="payment-reference"></span></li>
+      </ul>
+    </div>
+    <table id="items">
+      <thead>
+        <tr><th>Description</th><th>Amount</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="total-row">Total: $<span id="total"></span></div>
+  </div>
+  <div id="actions" class="hidden">
+    <button id="print-btn">Print</button>
+    <button id="pdf-btn">Download PDF</button>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
