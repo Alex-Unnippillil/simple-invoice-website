@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Invoice</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    form div { margin-bottom: 1rem; }
+    [aria-invalid="true"] { border: 2px solid #d00; }
+  </style>
+</head>
+<body>
+  <main>
+  <h1>Create Invoice</h1>
+  <form id="invoice-form">
+    <div>
+      <label for="tenant-name">Tenant Name</label>
+      <input id="tenant-name" name="tenant-name" required aria-invalid="false" />
+    </div>
+    <div>
+      <label for="rent-amount">Rent Amount</label>
+      <input id="rent-amount" name="rent-amount" type="number" required aria-invalid="false" />
+    </div>
+    <div>
+      <label for="due-date">Due Date</label>
+      <input id="due-date" name="due-date" type="date" required aria-invalid="false" />
+    </div>
+    <div>
+      <label for="paid-date">Paid Date</label>
+      <input id="paid-date" name="paid-date" type="date" aria-invalid="false" />
+    </div>
+    <button type="submit" id="submit-btn">Generate Receipt</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('invoice-form');
+
+    form.addEventListener('submit', event => {
+      let firstInvalid = null;
+      Array.from(form.elements).forEach(el => {
+        if (el.tagName === 'INPUT') {
+          if (el.required && !el.value.trim()) {
+            el.setAttribute('aria-invalid', 'true');
+            if (!firstInvalid) firstInvalid = el;
+          } else {
+            el.setAttribute('aria-invalid', 'false');
+          }
+        }
+      });
+      if (firstInvalid) {
+        event.preventDefault();
+        firstInvalid.focus();
+      }
+    });
+  </script>
+  </main>
+</body>
+</html>
