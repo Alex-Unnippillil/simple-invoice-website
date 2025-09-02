@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Radar Rules</title>
+</head>
+<body>
+  <h1>Manage Radar Rules</h1>
+  <section>
+    <h2>Create or Update Rule</h2>
+    <form id="rule-form">
+      <label for="ruleType">Rule Type:</label>
+      <select name="ruleType" id="ruleType">
+        <option value="country">Block Country</option>
+        <option value="velocity">Velocity Limit</option>
+      </select>
+      <input type="text" name="value" placeholder="Country code or attempts" required />
+      <button type="submit">Save Rule</button>
+    </form>
+  </section>
+  <section>
+    <h2>Allow / Deny Tenant Email</h2>
+    <form id="list-form">
+      <select name="listType" id="listType">
+        <option value="allow">Allow</option>
+        <option value="deny">Deny</option>
+      </select>
+      <input type="email" name="email" placeholder="tenant@example.com" required />
+      <button type="submit">Add Email</button>
+    </form>
+  </section>
+  <p id="message"></p>
+  <script>
+    const ruleForm = document.getElementById('rule-form');
+    const listForm = document.getElementById('list-form');
+    const message = document.getElementById('message');
+
+    ruleForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(ruleForm).entries());
+      const res = await fetch('/rules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const out = await res.json();
+      message.textContent = out.success ? 'Rule saved. Check Stripe Dashboard.' : out.error;
+    });
+
+    listForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(listForm).entries());
+      const res = await fetch('/list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const out = await res.json();
+      message.textContent = out.success ? 'List updated.' : out.error;
+    });
+  </script>
+</body>
+</html>
