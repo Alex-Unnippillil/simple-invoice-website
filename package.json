@@ -11,7 +11,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.2.0",
+    "bcryptjs": "^2.4.3",
     "express": "^5.1.0",
+    "next": "^14.2.3",
+    "next-auth": "^4.24.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "prisma": "^5.2.0"
   }
 }
