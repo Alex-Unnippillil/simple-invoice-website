@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
+    "ioredis": "^5.4.1",
     "sqlite3": "^5.1.7"
   }
 }
