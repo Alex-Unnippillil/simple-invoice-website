@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lease <%= lease.id %></title>
+</head>
+<body>
+  <h1>Lease for <%= lease.tenant %></h1>
+
+  <h2>Upcoming Charges</h2>
+  <ul>
+    <% upcoming.forEach(c => { %>
+      <li><%= c.date.toDateString() %> - <%= c.description %> - $<%= c.amount.toFixed(2) %></li>
+    <% }) %>
+  </ul>
+
+  <h2>Recurring Charges</h2>
+  <ul>
+    <% recurringCharges.forEach(rc => { %>
+      <li>
+        <%= rc.description %> ($<%= rc.amount %> / <%= rc.cadence %>)
+        <form method="post" action="/leases/<%= lease.id %>/recurring-charges/<%= rc.id %>/delete" style="display:inline">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+
+  <h3>Add Recurring Charge</h3>
+  <form method="post" action="/leases/<%= lease.id %>/recurring-charges">
+    <input name="description" placeholder="Description" required />
+    <input name="amount" placeholder="Amount" type="number" step="0.01" required />
+    <select name="cadence">
+      <option value="monthly">Monthly</option>
+      <option value="weekly">Weekly</option>
+      <option value="daily">Daily</option>
+    </select>
+    <button type="submit">Add</button>
+  </form>
+
+  <h2>Adjustments</h2>
+  <ul>
+    <% adjustments.forEach(adj => { %>
+      <li>
+        <%= adj.description %> ($<%= adj.amount %>)
+        <form method="post" action="/leases/<%= lease.id %>/adjustments/<%= adj.id %>/delete" style="display:inline">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+
+  <h3>Add Adjustment</h3>
+  <form method="post" action="/leases/<%= lease.id %>/adjustments">
+    <input name="description" placeholder="Description" required />
+    <input name="amount" placeholder="Amount" type="number" step="0.01" required />
+    <button type="submit">Add</button>
+  </form>
+</body>
+</html>
