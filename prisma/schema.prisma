@@ -1,0 +1,15 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id       Int     @id @default(autoincrement())
+  address  String?
+  phone    String?
+  currency String?
+}
