@@ -9,22 +9,22 @@ export async function sendEmail(options: {
   subject: string;
   react: React.ReactElement;
 }) {
-  try {
-    const data = await resend.emails.send(options);
-    console.log('Email sent', data);
-    return data;
-  } catch (error) {
+    try {
+      const data = await resend.emails.send(options);
+      console.warn('Email sent', data);
+      return data;
+    } catch (error) {
     console.error('Error sending email', error);
     throw error;
   }
 }
 
 export async function verifyDomain(domainId: string) {
-  try {
-    const data = await resend.domains.verify({ id: domainId });
-    console.log('Domain verified', data);
-    return data;
-  } catch (error) {
+    try {
+      const data = await resend.domains.verify({ id: domainId });
+      console.warn('Domain verified', data);
+      return data;
+    } catch (error) {
     console.error('Domain verification failed', error);
     throw error;
   }

@@ -29,15 +29,15 @@ export async function sendOverdueMessage(to: string, link: string) {
 export async function handleWebhook(req: Request, res: Response) {
   const { MessageSid, MessageStatus, Body, From } = req.body;
 
-  if (MessageSid && MessageStatus) {
-    // TODO: update message status in database
-    console.log(`Message ${MessageSid} status: ${MessageStatus}`);
-  }
+    if (MessageSid && MessageStatus) {
+      // TODO: update message status in database
+      console.warn(`Message ${MessageSid} status: ${MessageStatus}`);
+    }
 
-  if (Body && /\bSTOP\b/i.test(Body)) {
-    // TODO: flag tenant as opted out
-    console.log(`Phone ${From} opted out of SMS`);
-  }
+    if (Body && /\bSTOP\b/i.test(Body)) {
+      // TODO: flag tenant as opted out
+      console.warn(`Phone ${From} opted out of SMS`);
+    }
 
   res.type('text/xml');
   res.send('<Response></Response>');
