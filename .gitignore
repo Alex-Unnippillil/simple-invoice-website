@@ -1,0 +1,3 @@
+node_modules/
+documents/*.pdf
+npm-debug.log

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Lease Admin</title>
+</head>
+<body>
+  <h1>Leases</h1>
+  <ul id="leases"></ul>
+  <script>
+    fetch('/api/leases').then(r => r.json()).then(data => {
+      const ul = document.getElementById('leases');
+      data.forEach(l => {
+        const li = document.createElement('li');
+        li.textContent = `Lease ${l.id}`;
+        const link = document.createElement('a');
+        link.href = `/api/leases/${l.id}/pdf`;
+        link.textContent = 'Download summary';
+        link.style.marginLeft = '10px';
+        li.appendChild(link);
+        ul.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>

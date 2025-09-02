@@ -1,0 +1,10 @@
+[
+  {
+    "id": "1",
+    "tenantId": "t1",
+    "propertyId": "p1",
+    "rent": 1200,
+    "startDate": "2023-01-01",
+    "endDate": "2023-12-31"
+  }
+]
