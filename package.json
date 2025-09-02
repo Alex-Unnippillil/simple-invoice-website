@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node -e \"console.log('no tests')\""
+    "test": "node tests/invoice_pdf.test.js"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +13,9 @@
   "dependencies": {
     "express": "^5.1.0",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@react-pdf/renderer": "^4.3.0",
+    "react": "^19.1.1"
   }
 }
