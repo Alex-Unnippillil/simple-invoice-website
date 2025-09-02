@@ -9,20 +9,45 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Unit {
-  id     Int     @id @default(autoincrement())
-  name   String
-  leases Lease[]
+model Organization {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  properties Property[]
+  admins     Admin[]
 }
 
-model TenantProfile {
+model Property {
+  id             Int          @id @default(autoincrement())
+  name           String       @unique
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+  units          Unit[]
+}
+
+model Admin {
+  id             Int          @id @default(autoincrement())
+  email          String       @unique
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+}
+
+model Unit {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  property    Property  @relation(fields: [propertyId], references: [id])
+  propertyId  Int
+  leases      Lease[]
+}
+
+model Tenant {
   id     Int     @id @default(autoincrement())
   name   String
+  email  String  @unique
   leases Lease[]
 }
 
 model Lease {
-  id          Int           @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   startDate   DateTime
   endDate     DateTime
   monthlyRent Float
@@ -30,8 +55,34 @@ model Lease {
   currency    String
   billingDay  Int
   status      String
-  unit        Unit          @relation(fields: [unitId], references: [id])
+  unit        Unit      @relation(fields: [unitId], references: [id])
   unitId      Int
-  tenant      TenantProfile @relation(fields: [tenantId], references: [id])
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
   tenantId    Int
+  invoices    Invoice[]
+
+  @@unique([unitId, tenantId])
 }
+
+model Invoice {
+  id        Int           @id @default(autoincrement())
+  issueDate DateTime
+  dueDate   DateTime
+  status    String
+  lease     Lease         @relation(fields: [leaseId], references: [id])
+  leaseId   Int
+  items     InvoiceItem[]
+
+  @@unique([leaseId, dueDate])
+}
+
+model InvoiceItem {
+  id          Int     @id @default(autoincrement())
+  description String
+  amount      Float
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId   Int
+
+  @@unique([invoiceId, description])
+}
+
