@@ -1,9 +1,19 @@
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
+  const adminEmail = 'admin@example.com';
+  const adminPassword = 'admin123';
+  const tenantEmail = 'tenant@example.com';
+
+  const hashedPassword = await bcrypt.hash(adminPassword, 10);
+  const admin = await prisma.user.create({
+    data: { email: adminEmail, password: hashedPassword, role: 'admin' }
+  });
+
   const unit = await prisma.unit.create({ data: { name: 'Unit A' } });
-  const tenant = await prisma.tenantProfile.create({ data: { name: 'Alice' } });
+  const tenant = await prisma.tenantProfile.create({ data: { name: 'Alice', email: tenantEmail } });
   const lease = await prisma.lease.create({
     data: {
       unitId: unit.id,
@@ -17,6 +27,7 @@ async function main() {
       status: 'active'
     }
   });
+  console.log('Seeded admin', admin);
   console.log('Seeded lease', lease);
 }
 
