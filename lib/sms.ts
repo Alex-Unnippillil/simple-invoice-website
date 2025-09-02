@@ -1,5 +1,6 @@
 import Twilio from 'twilio';
 import type { Request, Response } from 'express';
+import { isFeatureEnabled } from './flags';
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID!;
 const authToken = process.env.TWILIO_AUTH_TOKEN!;
@@ -9,6 +10,10 @@ const client = Twilio(accountSid, authToken);
 
 /** Send a rent due reminder SMS */
 export async function sendDueMessage(to: string, link: string) {
+  if (!isFeatureEnabled('sms')) {
+    console.log('SMS feature disabled');
+    return Promise.resolve();
+  }
   return client.messages.create({
     to,
     from: fromNumber,
@@ -18,6 +23,10 @@ export async function sendDueMessage(to: string, link: string) {
 
 /** Send a rent overdue reminder SMS */
 export async function sendOverdueMessage(to: string, link: string) {
+  if (!isFeatureEnabled('sms')) {
+    console.log('SMS feature disabled');
+    return Promise.resolve();
+  }
   return client.messages.create({
     to,
     from: fromNumber,
@@ -27,6 +36,11 @@ export async function sendOverdueMessage(to: string, link: string) {
 
 /** Handle Twilio delivery status and opt-out callbacks */
 export async function handleWebhook(req: Request, res: Response) {
+  if (!isFeatureEnabled('sms')) {
+    res.type('text/xml');
+    res.send('<Response></Response>');
+    return;
+  }
   const { MessageSid, MessageStatus, Body, From } = req.body;
 
   if (MessageSid && MessageStatus) {

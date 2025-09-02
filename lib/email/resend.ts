@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import React from 'react';
+import { isFeatureEnabled } from '../flags';
 
 const resend = new Resend(process.env.RESEND_API_KEY || '');
 
@@ -9,6 +10,10 @@ export async function sendEmail(options: {
   subject: string;
   react: React.ReactElement;
 }) {
+  if (!isFeatureEnabled('email')) {
+    console.log('Email feature disabled');
+    return;
+  }
   try {
     const data = await resend.emails.send(options);
     console.log('Email sent', data);
