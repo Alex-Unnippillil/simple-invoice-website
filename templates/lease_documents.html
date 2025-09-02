@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Lease Documents</title>
+  </head>
+  <body>
+    <h1>Documents for lease {{ lease_id }}</h1>
+    <ul>
+      {% for key in keys %}
+      <li>{{ key }}</li>
+      {% endfor %}
+    </ul>
+    <button id="download">Download ZIP</button>
+    <script>
+      document.getElementById('download').addEventListener('click', async () => {
+        const resp = await fetch('{{ url_for("generate_link", lease_id=lease_id) }}');
+        const data = await resp.json();
+        window.location = data.url;
+      });
+    </script>
+  </body>
+</html>
