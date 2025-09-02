@@ -6,7 +6,27 @@ const app = express();
 initDb();
 
 app.use(express.json());
+
+// Allow browser clients running on localhost to access the API and uploaded files.
+app.use((req, res, next) => {
+  const origin = req.headers.origin || '';
+  if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Lease document endpoints
+const leaseDocuments = require('./routes/leaseDocuments');
+app.use('/api/leases/:leaseId/documents', leaseDocuments);
 
 // Webhook endpoint for provider to send status updates
 app.post('/webhook', (req, res) => {

@@ -1,5 +1,10 @@
-const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
-const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+let S3Client, PutObjectCommand, GetObjectCommand, getSignedUrl;
+try {
+  ({ S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3'));
+  ({ getSignedUrl } = require('@aws-sdk/s3-request-presigner'));
+} catch (e) {
+  // AWS SDK not installed; local storage will be used.
+}
 const path = require('path');
 const fs = require('fs');
 
@@ -11,7 +16,9 @@ function getS3Client() {
 async function uploadBuffer(buffer, key, mimetype) {
   const client = getS3Client();
   if (!client) {
-    const filePath = path.join(__dirname, '../uploads', key);
+    const uploadDir = path.join(__dirname, '../uploads');
+    fs.mkdirSync(uploadDir, { recursive: true });
+    const filePath = path.join(uploadDir, key);
     fs.writeFileSync(filePath, buffer);
     return { storageKey: key, local: true };
   }
