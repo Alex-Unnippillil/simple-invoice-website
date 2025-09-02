@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Invoice</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Invoices</h1>
+  <ul id="invoice-list" class="skeleton">
+    <li class="skeleton-item"></li>
+    <li class="skeleton-item"></li>
+    <li class="skeleton-item"></li>
+  </ul>
+  <div id="list-empty" class="empty hidden">No invoices found.</div>
+  <div id="list-error" class="error hidden"></div>
+
+  <h2>Create Invoice</h2>
+  <form id="invoice-form">
+    <label>
+      Customer Name
+      <input type="text" id="customer" />
+      <span class="error-message" data-for="customer"></span>
+    </label>
+    <label>
+      Amount
+      <input type="number" id="amount" />
+      <span class="error-message" data-for="amount"></span>
+    </label>
+    <button type="submit">Create</button>
+    <div id="form-error" class="error hidden"></div>
+  </form>
+
+  <script src="app.js"></script>
+</body>
+</html>
