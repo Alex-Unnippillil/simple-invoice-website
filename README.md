@@ -12,3 +12,4 @@ SENTRY_DSN=<your dsn> npm start
 ```
 
 Trigger an example error (which will create a Sentry event linked to the trace) by requesting `GET /error`.
+
