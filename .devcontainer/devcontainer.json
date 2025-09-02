@@ -1,0 +1,14 @@
+{
+  "name": "Simple Invoice Website",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts",
+      "pnpm": "latest"
+    }
+  },
+  "forwardPorts": [3000],
+  "postCreateCommand": "npm install"
+}
