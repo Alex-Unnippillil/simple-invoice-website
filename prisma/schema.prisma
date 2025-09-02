@@ -1,0 +1,37 @@
+// Prisma schema for simple-invoice-website
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Unit {
+  id     Int     @id @default(autoincrement())
+  name   String
+  leases Lease[]
+}
+
+model TenantProfile {
+  id     Int     @id @default(autoincrement())
+  name   String
+  leases Lease[]
+}
+
+model Lease {
+  id          Int           @id @default(autoincrement())
+  startDate   DateTime
+  endDate     DateTime
+  monthlyRent Float
+  deposit     Float
+  currency    String
+  billingDay  Int
+  status      String
+  unit        Unit          @relation(fields: [unitId], references: [id])
+  unitId      Int
+  tenant      TenantProfile @relation(fields: [tenantId], references: [id])
+  tenantId    Int
+}
