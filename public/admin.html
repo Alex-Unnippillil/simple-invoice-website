@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Invoice Admin</title>
+  <script defer src="admin.js"></script>
+</head>
+<body>
+  <h1>Invoice Admin</h1>
+  <section>
+    <h2>Create Invoice</h2>
+    <form id="create-form">
+      <input name="client" placeholder="Client" required />
+      <input name="amount" type="number" placeholder="Amount" required />
+      <input name="status" placeholder="Status" />
+      <button type="submit">Create</button>
+    </form>
+  </section>
+  <section>
+    <h2>Invoices</h2>
+    <ul id="invoice-list"></ul>
+  </section>
+</body>
+</html>
