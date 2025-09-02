@@ -1,0 +1,9 @@
+[
+  {
+    "id": "1756786812937",
+    "client": "Acme",
+    "amount": 100,
+    "status": "paid",
+    "deleted": true
+  }
+]

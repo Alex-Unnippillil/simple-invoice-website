@@ -1,0 +1,13 @@
+{
+  "name": "simple-invoice-website",
+  "version": "1.0.0",
+  "description": "Simple invoice API and admin UI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo 'No tests'"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
