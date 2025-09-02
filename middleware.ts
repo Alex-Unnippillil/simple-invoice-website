@@ -22,10 +22,19 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  // Assign experiment variant if one is not already set.
+  const response = NextResponse.next();
+  const experimentCookie = request.cookies.get('experiment-variant');
+
+  if (!experimentCookie) {
+    const variant = Math.random() < 0.5 ? 'control' : 'test';
+    response.cookies.set('experiment-variant', variant, { path: '/' });
+  }
+
+  return response;
 }
 
 export const config = {
-  matcher: ['/tenant/:path*', '/admin/:path*'],
+  matcher: ['/:path*'],
 };
 
