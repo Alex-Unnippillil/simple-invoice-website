@@ -1,0 +1,11 @@
+<!doctype html>
+<title>Schedule Report</title>
+<h1>Schedule Report</h1>
+<form method="post">
+  <label>Report Type: <input name="report_type" value="{{ job.report_type if job else '' }}"></label><br>
+  <label>Recipients (comma separated): <input name="recipients" value="{{ job.recipients|join(',') if job else '' }}"></label><br>
+  <label>Cron Expression: <input name="cron" value="{{ job.cron if job else '0 9 * * *' }}"></label><br>
+  <label>Time Zone: <input name="time_zone" value="{{ job.time_zone if job else 'UTC' }}"></label><br>
+  <button type="submit">Save</button>
+</form>
+<a href="{{ url_for('list_schedules') }}">Back to schedules</a>

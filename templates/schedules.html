@@ -1,0 +1,17 @@
+<!doctype html>
+<title>Schedules</title>
+<h1>Schedules</h1>
+<a href="{{ url_for('schedule') }}">Create New</a>
+<ul>
+{% for job in schedules.values() %}
+  <li>
+    {{ job.report_type }} -> {{ job.recipients }} ({{ job.cron }} {{ job.time_zone }})
+    <form action="{{ url_for('optout', job_id=job.id) }}" method="post" style="display:inline;">
+      <input name="email" placeholder="email to opt out">
+      <button type="submit">Opt-out</button>
+    </form>
+    <a href="{{ url_for('edit', job_id=job.id) }}">Edit</a>
+    <a href="{{ url_for('delete', job_id=job.id) }}">Delete</a>
+  </li>
+{% endfor %}
+</ul>
