@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      issues: write
       contents: read
     steps:
       - uses: actions/checkout@v3
@@ -28,21 +29,32 @@ jobs:
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
-      - name: Update PR Description with Preview URL
+      - name: Comment Preview URL and Checklist
         uses: actions/github-script@v6
         with:
           script: |
+            const fs = require('fs');
             const url = process.env.PREVIEW_URL;
-            const {data: pr} = await github.rest.pulls.get({
+            const checklist = fs.readFileSync('docs/preview-checklist.md', 'utf8');
+            const marker = '<!-- vercel-preview-comment -->';
+            const body = `${marker}\nPreview deployment: ${url}\n\n${checklist}`;
+            const {data: comments} = await github.rest.issues.listComments({
               ...context.repo,
-              pull_number: context.issue.number,
+              issue_number: context.issue.number,
             });
-            const previewLine = `Preview deployment: ${url}`;
-            const body = pr.body ? pr.body.replace(/Preview deployment:.*\n?/,'').trim() + '\n\n' + previewLine : previewLine;
-            await github.rest.pulls.update({
-              ...context.repo,
-              pull_number: context.issue.number,
-              body,
-            });
+            const existing = comments.find(c => c.body.startsWith(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                ...context.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
         env:
           PREVIEW_URL: ${{ steps.deploy.outputs.url }}
