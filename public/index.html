@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Stripe Payment Element Demo</title>
+</head>
+<body>
+  <form id="payment-form">
+    <div id="payment-element"></div>
+    <button id="submit">Pay</button>
+    <div id="error-message" role="alert"></div>
+  </form>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    (async () => {
+      const {publishableKey} = await fetch('/config').then(r => r.json());
+      const stripe = Stripe(publishableKey);
+
+      const {clientSecret} = await fetch('/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 1099, tenantId: 'tenantA' })
+      }).then(r => r.json());
+
+      const elements = stripe.elements({ clientSecret });
+      const paymentElement = elements.create('payment');
+      paymentElement.mount('#payment-element');
+
+      const form = document.getElementById('payment-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const {error} = await stripe.confirmPayment({
+          elements,
+          confirmParams: {
+            return_url: window.location.href
+          }
+        });
+        if (error) {
+          document.getElementById('error-message').textContent = error.message;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
