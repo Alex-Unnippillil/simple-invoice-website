@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { buildAuthOptions } from '../../../../authOptions';
 import archiver from 'archiver';
 import { readdir } from 'fs/promises';
 import path from 'path';
@@ -18,6 +20,11 @@ function nodeStreamToWeb(stream: NodeJS.ReadableStream): ReadableStream<Uint8Arr
 }
 
 export async function GET() {
+  const session = await getServerSession(buildAuthOptions());
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const receiptsDir = path.join(process.cwd(), 'storage', 'receipts');
   const files = await readdir(receiptsDir);
 

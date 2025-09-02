@@ -1,4 +1,7 @@
-export default function DataExportPage() {
+import { requireAuth } from '../../../lib/auth/requireAuth';
+
+export default async function DataExportPage() {
+  await requireAuth();
   return (
     <main>
       <h1>Export Your Data</h1>

@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { buildAuthOptions } from '../../../../authOptions';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -10,6 +12,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  * Supports both instant verification and micro‑deposit flows.
  */
 export async function POST(req: Request) {
+  const session = await getServerSession(buildAuthOptions());
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { intentId, type = 'payment', amounts } = await req.json();
 
   try {
