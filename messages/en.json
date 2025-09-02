@@ -1,0 +1,9 @@
+{
+  "Index": {
+    "title": "Simple Invoice",
+    "description": "Basic rent invoicing system that records payments and generates printable/PDF rent receipts"
+  },
+  "LocaleSwitcher": {
+    "label": "Language"
+  }
+}

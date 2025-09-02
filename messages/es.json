@@ -1,0 +1,9 @@
+{
+  "Index": {
+    "title": "Factura Simple",
+    "description": "Sistema básico de facturación de alquiler que registra pagos y genera recibos de alquiler imprimibles/PDF"
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma"
+  }
+}
