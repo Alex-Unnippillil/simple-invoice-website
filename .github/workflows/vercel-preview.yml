@@ -1,0 +1,48 @@
+name: Vercel Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Update PR Description with Preview URL
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const url = process.env.PREVIEW_URL;
+            const {data: pr} = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.issue.number,
+            });
+            const previewLine = `Preview deployment: ${url}`;
+            const body = pr.body ? pr.body.replace(/Preview deployment:.*\n?/,'').trim() + '\n\n' + previewLine : previewLine;
+            await github.rest.pulls.update({
+              ...context.repo,
+              pull_number: context.issue.number,
+              body,
+            });
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
