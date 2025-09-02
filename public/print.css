@@ -1,0 +1,23 @@
+/* Styles that produce consistent, paper-friendly invoices when printing.
+   Hide any on-screen only elements using the `.no-print` class. */
+@media print {
+  body {
+    margin: 1in;
+    color: #000;
+    background: #fff;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #000;
+    padding: 4px;
+  }
+}
