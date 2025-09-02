@@ -8,6 +8,32 @@ initDb();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Robots.txt endpoint
+app.get('/robots.txt', (req, res) => {
+  if (process.env.NODE_ENV !== 'production') {
+    return res.type('text/plain').send('User-agent: *\nDisallow: /\n');
+  }
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  res
+    .type('text/plain')
+    .send(`User-agent: *\nAllow: /\nSitemap: ${baseUrl}/sitemap.xml\n`);
+});
+
+// Sitemap endpoint (only served in production)
+app.get('/sitemap.xml', (req, res) => {
+  if (process.env.NODE_ENV !== 'production') {
+    return res.status(404).end();
+  }
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  const urls = ['/', '/admin.html', '/lease.html'];
+  const body =
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    urls.map((u) => `  <url><loc>${baseUrl}${u}</loc></url>`).join('\n') +
+    '\n</urlset>\n';
+  res.type('application/xml').send(body);
+});
+
 // Webhook endpoint for provider to send status updates
 app.post('/webhook', (req, res) => {
   const { leaseId, status } = req.body;
