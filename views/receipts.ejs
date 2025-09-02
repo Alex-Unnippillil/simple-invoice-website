@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Rent Receipts</title>
+</head>
+<body>
+  <h1>Rent Receipts</h1>
+  <table border="1" cellspacing="0" cellpadding="6">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Invoice</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% receipts.forEach(function(r) { %>
+        <tr>
+          <td><%= r.date %></td>
+          <td>$<%= r.amount.toFixed(2) %></td>
+          <td><a href="<%= r.invoiceUrl %>">View Invoice</a></td>
+          <td>
+            <a href="<%= r.invoiceUrl %>.pdf" download>Download</a>
+            <button onclick="printInvoice('<%= r.invoiceUrl %>')">Print</button>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <script>
+    function printInvoice(url) {
+      const win = window.open(url, '_blank');
+      if (win) {
+        win.addEventListener('load', () => win.print());
+      }
+    }
+  </script>
+</body>
+</html>
