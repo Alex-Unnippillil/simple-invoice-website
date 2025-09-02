@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lease Signing</title>
+</head>
+<body>
+  <h1>Lease Signing</h1>
+  <form id="signForm">
+    <input name="name" placeholder="Tenant Name" required />
+    <input name="email" placeholder="Tenant Email" required />
+    <button type="submit">Start Signing</button>
+  </form>
+  <iframe id="signFrame" style="display:none;" width="100%" height="600"></iframe>
+<script>
+const form = document.getElementById('signForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = {
+    tenantName: form.name.value,
+    tenantEmail: form.email.value
+  };
+  const res = await fetch('/lease', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  const frame = document.getElementById('signFrame');
+  frame.src = result.url;
+  frame.style.display = 'block';
+});
+</script>
+</body>
+</html>
