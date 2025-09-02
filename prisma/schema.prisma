@@ -1,0 +1,39 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Admin {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  tenants Tenant[]
+}
+
+model Tenant {
+  id       Int       @id @default(autoincrement())
+  name     String
+  admin    Admin     @relation(fields: [adminId], references: [id])
+  adminId  Int
+  invoices Invoice[]
+}
+
+model Invoice {
+  id       Int      @id @default(autoincrement())
+  tenant   Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId Int
+  date     DateTime @default(now())
+  items    Item[]
+}
+
+model Item {
+  id          Int     @id @default(autoincrement())
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId   Int
+  description String
+  amount      Float
+}
