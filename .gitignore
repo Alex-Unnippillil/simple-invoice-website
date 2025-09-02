@@ -1,0 +1,4 @@
+deletion.log
+uploads/*
+!uploads/.gitkeep
+node_modules
