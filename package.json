@@ -1,0 +1,18 @@
+{
+  "name": "simple-invoice-website",
+  "version": "1.0.0",
+  "description": "basic rent invoicing system that records payments and generates printable/PDF rent receipts",
+  "main": "index.js",
+  "scripts": {
+    "test": "node axe-test.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@axe-core/cli": "^4.10.2",
+    "axe-core": "^4.10.3",
+    "jsdom": "^26.1.0"
+  }
+}
