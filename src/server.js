@@ -1,6 +1,7 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const path = require('path');
+const { getLeases, getUnits } = require('../services/tenantScopedQueries');
 
 const app = express();
 const prisma = new PrismaClient();
@@ -8,8 +9,18 @@ const prisma = new PrismaClient();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+// Simple middleware requiring an X-Tenant-ID header for scoping
+function requireTenant(req, res, next) {
+  const tenantId = parseInt(req.get('x-tenant-id'), 10);
+  if (!tenantId) {
+    return res.status(400).json({ error: 'tenant id header required' });
+  }
+  req.tenantId = tenantId;
+  next();
+}
+
 // Units endpoints
-app.post('/api/units', async (req, res) => {
+app.post('/api/units', requireTenant, async (req, res) => {
   try {
     const unit = await prisma.unit.create({ data: { name: req.body.name } });
     res.json(unit);
@@ -18,8 +29,8 @@ app.post('/api/units', async (req, res) => {
   }
 });
 
-app.get('/api/units', async (_req, res) => {
-  const units = await prisma.unit.findMany();
+app.get('/api/units', requireTenant, async (req, res) => {
+  const units = await getUnits(prisma, req.tenantId);
   res.json(units);
 });
 
@@ -33,13 +44,13 @@ app.post('/api/tenants', async (req, res) => {
   }
 });
 
-app.get('/api/tenants', async (_req, res) => {
-  const tenants = await prisma.tenantProfile.findMany();
-  res.json(tenants);
+app.get('/api/tenants', requireTenant, async (req, res) => {
+  const tenant = await prisma.tenantProfile.findUnique({ where: { id: req.tenantId } });
+  res.json(tenant ? [tenant] : []);
 });
 
-// Lease endpoint
-app.post('/api/leases', async (req, res) => {
+// Lease endpoints
+app.post('/api/leases', requireTenant, async (req, res) => {
   try {
     const lease = await prisma.lease.create({
       data: {
@@ -51,8 +62,8 @@ app.post('/api/leases', async (req, res) => {
         billingDay: req.body.billingDay,
         status: req.body.status,
         unitId: req.body.unitId,
-        tenantId: req.body.tenantId
-      }
+        tenantId: req.tenantId,
+      },
     });
     res.json(lease);
   } catch (e) {
@@ -60,10 +71,12 @@ app.post('/api/leases', async (req, res) => {
   }
 });
 
-app.get('/api/leases', async (_req, res) => {
-  const leases = await prisma.lease.findMany({ include: { unit: true, tenant: true } });
+app.get('/api/leases', requireTenant, async (req, res) => {
+  const leases = await getLeases(prisma, req.tenantId);
   res.json(leases);
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+module.exports = { app, requireTenant };
