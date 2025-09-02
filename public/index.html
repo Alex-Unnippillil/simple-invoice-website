@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Envelope Errors</title>
+</head>
+<body>
+  <h1>Envelope Errors</h1>
+  <ul id="error-list"></ul>
+  <script>
+    async function loadErrors() {
+      const res = await fetch('/errors');
+      const data = await res.json();
+      const list = document.getElementById('error-list');
+      list.innerHTML = '';
+      data.forEach(err => {
+        const li = document.createElement('li');
+        li.textContent = err.message + ' ';
+        const resend = document.createElement('button');
+        resend.textContent = 'Resend';
+        resend.onclick = () => action('/resend', err.envelopeId);
+        li.appendChild(resend);
+        const reinvite = document.createElement('button');
+        reinvite.textContent = 'Reinvite';
+        reinvite.onclick = () => action('/reinvite', err.envelopeId);
+        li.appendChild(reinvite);
+        list.appendChild(li);
+      });
+    }
+    async function action(endpoint, envelopeId) {
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ envelopeId })
+      });
+      loadErrors();
+    }
+    loadErrors();
+  </script>
+</body>
+</html>
