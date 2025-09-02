@@ -13,6 +13,8 @@ function initDb() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       lease_id TEXT,
       event TEXT,
+      experiment_id TEXT,
+      variant_id TEXT,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
   });
@@ -34,10 +36,18 @@ function getStatuses(leaseId, cb) {
   );
 }
 
-function logEvent(leaseId, event) {
+function logEvent(leaseId, event, experimentId = null, variantId = null) {
   db.run(
-    'INSERT INTO events (lease_id, event) VALUES (?, ?)',
-    [leaseId, event]
+    'INSERT INTO events (lease_id, event, experiment_id, variant_id) VALUES (?, ?, ?, ?)',
+    [leaseId, event, experimentId, variantId]
+  );
+}
+
+function getConversionMetrics(experimentId, cb) {
+  db.all(
+    'SELECT variant_id, COUNT(*) as conversions FROM events WHERE experiment_id = ? AND event = ? GROUP BY variant_id',
+    [experimentId, 'conversion'],
+    (err, rows) => cb(err, rows)
   );
 }
 
@@ -46,4 +56,5 @@ module.exports = {
   addStatus,
   getStatuses,
   logEvent,
+  getConversionMetrics,
 };
