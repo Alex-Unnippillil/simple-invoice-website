@@ -1,9 +1,21 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
 const { initDb, addStatus, getStatuses } = require('./database');
 
 const app = express();
 initDb();
+
+const sessionStore = new session.MemoryStore();
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+  })
+);
+app.set('sessionStore', sessionStore);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,7 +39,27 @@ app.get('/lease/:id/status', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Debug route to set the current user's role for testing purposes.
+app.post('/debug/login', (req, res) => {
+  const { role } = req.body;
+  req.session.user = { role };
+  res.json({ ok: true });
 });
+
+// Debug endpoint to view session information. Restricted to admin users.
+app.get('/debug/session', (req, res) => {
+  const user = req.session.user;
+  if (!user || user.role !== 'admin') {
+    return res.sendStatus(403);
+  }
+  res.json({ id: req.sessionID, session: req.session });
+});
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
