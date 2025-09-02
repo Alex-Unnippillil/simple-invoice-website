@@ -8,6 +8,11 @@ initDb();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Simple health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // Webhook endpoint for provider to send status updates
 app.post('/webhook', (req, res) => {
   const { leaseId, status } = req.body;
