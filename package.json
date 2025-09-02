@@ -5,12 +5,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node -e \"console.log('no tests')\""
+    "test": "node tests/test_sentry.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "^7.120.4",
     "express": "^5.1.0",
     "sqlite3": "^5.1.7"
   }
