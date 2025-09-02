@@ -1,0 +1,46 @@
+<!doctype html>
+<title>Contacts</title>
+<h1>Contacts</h1>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<table border="1">
+<tr><th>Email</th><th>Phone</th><th>Actions</th></tr>
+{% for c in contacts %}
+<tr>
+  <td>
+    {{ c['email'] or '' }}
+    {% if c['email_risky'] %}
+      <span style="color:red;font-weight:bold">risky</span>
+    {% endif %}
+  </td>
+  <td>
+    {{ c['phone'] or '' }}
+    {% if c['phone_risky'] %}
+      <span style="color:red;font-weight:bold">risky</span>
+    {% endif %}
+  </td>
+  <td>
+    <form action="{{ url_for('send_email', id=c['id']) }}" method="post" style="display:inline">
+      <button type="submit">Send Email</button>
+    </form>
+    <form action="{{ url_for('send_phone', id=c['id']) }}" method="post" style="display:inline">
+      <button type="submit">Send SMS</button>
+    </form>
+  </td>
+</tr>
+{% endfor %}
+</table>
+
+<h2>Add Contact</h2>
+<form action="{{ url_for('add_contact') }}" method="post">
+  <input name="email" placeholder="email">
+  <input name="phone" placeholder="phone">
+  <button type="submit">Add</button>
+</form>

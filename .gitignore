@@ -1,2 +1,7 @@
 node_modules
 data.db
+
+prisma/dev.db
+prisma/dev.db-journal
+.env
+
