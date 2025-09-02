@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invoice</title>
+  <style>
+    @media print {
+      nav { display: none; }
+    }
+    @page {
+      margin: 1in;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-to-print@3.1.1/lib/index.js"></script>
+  <script>
+    const { useRef } = React;
+    const { useReactToPrint } = window.lib;
+
+    function Invoice() {
+      return React.createElement('section', null,
+        React.createElement('h1', null, 'Invoice'),
+        React.createElement('p', null, 'Invoice details go here.')
+      );
+    }
+
+    function App() {
+      const componentRef = useRef();
+      const handlePrint = useReactToPrint({ content: () => componentRef.current });
+
+      return React.createElement('div', null,
+        React.createElement('nav', null, 'Navigation'),
+        React.createElement('button', { onClick: handlePrint }, 'Print Invoice'),
+        React.createElement('div', { ref: componentRef }, React.createElement(Invoice))
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+  </script>
+</body>
+</html>
