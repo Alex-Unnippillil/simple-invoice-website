@@ -1,0 +1,26 @@
+body {
+  font-family: Arial, sans-serif;
+}
+#invoice {
+  max-width: 600px;
+  margin: auto;
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+#items {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+#items th, #items td {
+  text-align: left;
+  padding: 4px;
+  border-bottom: 1px solid #eee;
+}
+#actions {
+  margin-top: 20px;
+  text-align: center;
+}
+.hidden {
+  display: none;
+}
