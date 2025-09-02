@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invoice Form</title>
+  <script src="invoice.js" defer></script>
+  <style>
+    #fx-warning { color: red; display: none; }
+  </style>
+</head>
+<body>
+  <form id="invoice-form">
+    <label>Invoice Currency:
+      <select id="invoice-currency">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="JPY">JPY</option>
+      </select>
+    </label>
+    <div id="items">
+      <div class="item">
+        <input type="number" class="amount" placeholder="Amount" />
+        <select class="currency">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="JPY">JPY</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <p id="fx-warning">
+    Invoices with mixed currencies are not supported. Mixing currencies may expose you to foreign exchange risk.
+  </p>
+</body>
+</html>
