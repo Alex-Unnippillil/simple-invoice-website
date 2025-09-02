@@ -19,3 +19,7 @@ Set environment variables for AWS to use S3:
 export AWS_REGION=us-east-1
 export S3_BUCKET=your-bucket
 ```
+
+### Local HTTPS
+
+See [docs/local-https.md](docs/local-https.md) for instructions on generating locally trusted certificates with mkcert and proxying the development server through Caddy.

@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+
+# Local TLS certificates
+certs/
+node_modules/
+data.db
+
