@@ -1,0 +1,12 @@
+[
+  {
+    "id": "inv_1",
+    "customer": "Jane Doe",
+    "amount_due": 50000,
+    "currency": "usd",
+    "status": "paid",
+    "charge_id": "ch_test",
+    "dispute_url": "https://dashboard.stripe.com/test/disputes/dp_test",
+    "notes": []
+  }
+]

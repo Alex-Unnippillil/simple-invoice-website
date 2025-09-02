@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Invoice <%= invoice.id %></title>
+</head>
+<body>
+  <h1>Invoice <%= invoice.id %></h1>
+  <p>Status: <%= invoice.status %></p>
+  <% if (invoice.dispute_url) { %>
+  <p><a href="<%= invoice.dispute_url %>" target="_blank">View Dispute in Stripe</a></p>
+  <% } %>
+  
+  <% if (invoice.status === 'contested') { %>
+  <h2>Evidence Checklist</h2>
+  <form action="/invoice/<%= invoice.id %>/evidence" method="post">
+    <label><input type="checkbox" name="proof_of_service"> Proof of service rendered</label><br>
+    <label><input type="checkbox" name="communication"> Communication with customer</label><br>
+    <label><input type="checkbox" name="terms"> Signed terms</label><br>
+    <p>Notes:</p>
+    <textarea name="note"></textarea><br>
+    <button type="submit">Submit Evidence</button>
+  </form>
+  <% } %>
+
+  <% if (invoice.status === 'evidence_submitted') { %>
+  <form action="/invoice/<%= invoice.id %>/resolve" method="post">
+    <p>Add Resolution Note:</p>
+    <textarea name="note"></textarea><br>
+    <button type="submit">Mark Resolved</button>
+  </form>
+  <% } %>
+
+  <h2>Audit Trail</h2>
+  <ul>
+    <% invoice.notes.forEach(function(n){ %>
+      <li><%= n.timestamp %>: <%= n.message %></li>
+    <% }); %>
+  </ul>
+</body>
+</html>
