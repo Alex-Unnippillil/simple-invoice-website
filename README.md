@@ -19,3 +19,12 @@ Set environment variables for AWS to use S3:
 export AWS_REGION=us-east-1
 export S3_BUCKET=your-bucket
 ```
+
+### Default Credentials (Development)
+
+The seed script creates default accounts for convenience:
+
+- Admin: `admin@example.com` with password `admin123`
+- Tenant: `tenant@example.com`
+
+These credentials are intended for local development only.
