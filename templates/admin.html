@@ -1,0 +1,24 @@
+<!doctype html>
+<title>Admin</title>
+<h1>Locked Users</h1>
+<ul>
+{% for user in users %}
+  <li>{{ user.username }}
+    <form method="post" style="display:inline">
+      <input type="hidden" name="username" value="{{ user.username }}">
+      <button type="submit">Unlock</button>
+    </form>
+  </li>
+{% else %}
+  <li>No locked users</li>
+{% endfor %}
+</ul>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
