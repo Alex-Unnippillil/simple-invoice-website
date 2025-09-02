@@ -35,3 +35,20 @@ model Lease {
   tenant      TenantProfile @relation(fields: [tenantId], references: [id])
   tenantId    Int
 }
+
+model Invoice {
+  id       String    @id
+  status   String
+  payments Payment[]
+}
+
+model Payment {
+  id                   Int      @id @default(autoincrement())
+  invoice              Invoice  @relation(fields: [invoiceId], references: [id])
+  invoiceId            String
+  amount               Int
+  status               String
+  stripePaymentIntentId String?
+  stripeChargeId       String?
+  createdAt            DateTime @default(now())
+}
