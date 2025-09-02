@@ -1,0 +1,6 @@
+{
+  "newInvoiceUI": {
+    "rollout": 1,
+    "kill_switch": false
+  }
+}
