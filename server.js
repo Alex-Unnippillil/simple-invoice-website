@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { initDb, addStatus, getStatuses } = require('./database');
+const { initDb, addStatus, getStatuses, getFeatureFlags } = require('./database');
 
 const app = express();
 initDb();
@@ -22,6 +22,14 @@ app.post('/webhook', (req, res) => {
 app.get('/lease/:id/status', (req, res) => {
   const leaseId = req.params.id;
   getStatuses(leaseId, (err, rows) => {
+    if (err) return res.status(500).json({ error: 'db error' });
+    res.json(rows);
+  });
+});
+
+// Admin endpoint to view feature flags
+app.get('/admin/flags', (req, res) => {
+  getFeatureFlags((err, rows) => {
     if (err) return res.status(500).json({ error: 'db error' });
     res.json(rows);
   });

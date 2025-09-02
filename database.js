@@ -15,6 +15,11 @@ function initDb() {
       event TEXT,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
+    db.run(`CREATE TABLE IF NOT EXISTS feature_flags (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE,
+      enabled INTEGER
+    )`);
   });
 }
 
@@ -41,9 +46,16 @@ function logEvent(leaseId, event) {
   );
 }
 
+function getFeatureFlags(cb) {
+  db.all('SELECT name, enabled FROM feature_flags ORDER BY id', (err, rows) =>
+    cb(err, rows)
+  );
+}
+
 module.exports = {
   initDb,
   addStatus,
   getStatuses,
   logEvent,
+  getFeatureFlags,
 };
