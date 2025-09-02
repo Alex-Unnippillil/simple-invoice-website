@@ -1,0 +1,25 @@
+name: Playwright Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm ci
+      - name: Install Playwright Browsers (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: npx playwright install --with-deps
+      - name: Install Playwright Browsers
+        if: matrix.os != 'ubuntu-latest'
+        run: npx playwright install
+      - run: npm test
