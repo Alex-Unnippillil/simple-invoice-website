@@ -5,13 +5,17 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node -e \"console.log('no tests')\""
+    "test": "node --test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.3"
   }
 }
